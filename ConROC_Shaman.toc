@@ -1,0 +1,11 @@
+## Title:-|cffFFFFFFConROC|r- |cff0070DEShaman|r
+## Version: 2.0.2
+## Author: Vae, 2.0.2 updated by Lith
+## Interface: 11500
+## SavedVariablesPerCharacter: ConROCShamanSpells
+## Dependencies: ConROC
+## LoadOnDemand: 1
+
+shaman_ids.lua
+shaman_spellmenu.lua
+shaman.lua
