@@ -46,14 +46,16 @@ ConROC.totemVariables = {
     -- Add more variables as needed
 }
 function ConROC:PLAYER_TOTEM_UPDATE()
-	local totems = ids.Player_Totems;
-    for i = 1, 4 do
-        local haveTotem, totemName, startTime, duration, icon = GetTotemInfo(i)
-        if haveTotem and totemName ~= nil then
-            for _, totem in ipairs(totems) do
-                if string.find(totemName, totem[1]) then
-                    ConROC.totemVariables[totem[2]] = startTime + duration
-                    break  -- No need to continue checking other totems
+    if ConROC:CheckBox(ConROC_SM_Option_Totems) then
+    	local totems = ids.Player_Totems;
+        for i = 1, 4 do
+            local haveTotem, totemName, startTime, duration, icon = GetTotemInfo(i)
+            if haveTotem and totemName ~= nil then
+                for _, totem in ipairs(totems) do
+                    if string.find(totemName, totem[1]) then
+                        ConROC.totemVariables[totem[2]] = startTime + duration
+                        break  -- No need to continue checking other totems
+                    end
                 end
             end
         end
@@ -486,8 +488,8 @@ ConROC:UpdateSpellID()
 	if IsSpellKnown(6603) then -- auto attack
 		tarInMelee = ConROC:Targets(6603);
 	end
-	if ConROC_AoEButton:IsVisible() and IsSpellKnown(_Thunderstorm) then
-		tarInAoe = ConROC:Targets(_Thunderstorm);
+	if ConROC_AoEButton:IsVisible() and IsSpellKnown(_ChainLightning) then
+		tarInAoe = ConROC:Targets(_ChainLightning);
 	end
 	--print(offHandType())
 --Indicators
@@ -721,7 +723,7 @@ function ConROC.Shaman.Defense(_, timeShift, currentSpell, gcd)
 --Warnings
 	
 --Rotations	
-	if lShieldRDY and not lShieldBUFF then
+	if lShieldRDY and not lShieldBUFF and (not IsAddOnLoaded("TotemTimers") or ConROC:CheckBox(ConROC_SM_Option_Shields)) then
 		return _LightningShield;
 	end
 	

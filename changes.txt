@@ -1,4 +1,6 @@
-Ver 2.0.2
+Ver 1.5.1
+	-Added check if TotemTimers is installed, and an override option if it is.
+Ver 1.5.0
 	-Support for Classic
 	-Started to add support for translations.
 Ver 1.13.2

@@ -145,45 +145,38 @@ function ConROC:SpellmenuClass()
 	      {spellID = "None", spellCheckbox = "OH_None", reqLevel = 1, type="none"}
 	    },
 	    groupType = "radioButtons"
-	  },--[[
-	  {
-	    frameName = "CD",
-	    spells = {
-	    	{spellID = ids.optionMaxIds.Immolate, spellCheckbox = "CD_feTotem", reqLevel = 1, type="spell"},
-	    	{spellID = ids.optionMaxIds.Corruption, spellCheckbox = "Debuff_Corruption", reqLevel = 4, type="spell"},
-	    	{spellID = ids.optionMaxIds.SoulFire, spellCheckbox = "Debuff_SoulFire", reqLevel = 48, type="spell"},
-	    	{spellID = ids.optionMaxIds.UnstableAffliction, spellCheckbox = "Debuff_UnstableAffliction", reqLevel = 50, type="spell"}
-	    },
-	    groupType = "checkBoxes"
-	  },
-	  {
-	    frameName = "Fillers",
-	    spells = {
-	    	{spellID = ids.optionMaxIds.ShadowBolt, spellCheckbox = "Spell_ShadowBolt", reqLevel = 1, type="spell"},
-	    	{spellID = ids.optionMaxIds.SearingPain, spellCheckbox = "Spell_SearingPain", reqLevel = 18, type="spell"},
-	    },
-	    groupType = "checkBoxes"
-	  },
-	  {
-	    frameName = "AoEs",
-	    spells = {
-	    	{spellID = ids.optionMaxIds.SeedofCorruption, spellCheckbox = "AoE_SeedofCorruption", reqLevel = 70, type="spell"},
-	    	{spellID = ids.optionMaxIds.RainofFire, spellCheckbox = "AoE_RainofFire", reqLevel = 20, type="spell"},
-	    	{spellID = ids.optionMaxIds.Hellfire, spellCheckbox = "AoE_Hellfire", reqLevel = 30, type="spell"},
-	    },
-	    groupType = "checkBoxes"
-	  },]]
-	  {
-	    frameName = "Options",
-	    spells = {
-	    	--{spellID = "Use Prepull actions", spellCheckbox = "Option_PrePull", reqLevel = 15, type="custom", icon=237511, customName="Use Prepull actions"},
-		    {spellID = "Weapon imbue reminder", spellCheckbox = "Option_Imbue", reqLevel = 1, type="custom", icon=136086, customName="Weapon imbue reminder"},
-		    {spellID = "Suggest totems in rotation", spellCheckbox = "Option_Totems", reqLevel = 10, type="custom", icon=310730, customName="Suggest totems in rotation"},
-	    	{spellID = "AoE Toggle Button", spellCheckbox = "Option_AoE", reqLevel = 20, type="aoetoggler"},
-	    	--{spellID = "Use Wand", spellCheckbox = "Option_UseWand", reqLevel = 5, type="wand"}
-	    }
 	  }
 	}
+	if IsAddOnLoaded("TotemTimers") then
+	  -- Include section related to TotemTimers
+	  table.insert(ConROC_RotationSettingsTable, {
+	    frameName = "Override TotemTimers",
+	    spells = {
+	        {spellID = ids.optionMaxIds.RockbiterWeapon, spellCheckbox = "Option_Imbue", reqLevel = 1, type="custom", icon=136086, customName="Weapon imbue reminder"},
+		    {spellID = ids.optionMaxIds.SearingTotem, spellCheckbox = "Option_Totems", reqLevel = 10, type="custom", icon=310730, customName="Suggest totems in rotation"},
+	    	{spellID = ids.optionMaxIds.LightningShield, spellCheckbox = "Option_Shields", reqLevel = 1, type="custom", icon=310730, customName="Suggest shields"},
+	    }
+	  })
+	  table.insert(ConROC_RotationSettingsTable, {
+		    frameName = "Options",
+		    spells = {
+		    	{spellID = "AoE toggle Button", spellCheckbox = "Option_AoE", reqLevel = 20, type="aoetoggler"},
+		    	--{spellID = "Use Wand", spellCheckbox = "Option_UseWand", reqLevel = 5, type="wand"}
+		    }
+		})
+	else
+		table.insert(ConROC_RotationSettingsTable, {
+		    frameName = "Options",
+		    spells = {
+		    	--{spellID = "Use Prepull actions", spellCheckbox = "Option_PrePull", reqLevel = 15, type="custom", icon=237511, customName="Use Prepull actions"},
+			    {spellID = ids.optionMaxIds.RockbiterWeapon, spellCheckbox = "Option_Imbue", reqLevel = 1, type="custom", icon=136086, customName="Weapon imbue reminder"},
+			    {spellID = ids.optionMaxIds.SearingTotem, spellCheckbox = "Option_Totems", reqLevel = 10, type="custom", icon=310730, customName="Suggest totems in rotation"},
+		    	--{spellID = ids.optionMaxIds.LightningShield, spellCheckbox = "Option_Shields", reqLevel = 1, type="custom", icon=310730, customName="Suggest shields"},
+		    	{spellID = "AoE toggle Button", spellCheckbox = "Option_AoE", reqLevel = 20, type="aoetoggler"},
+		    	--{spellID = "Use Wand", spellCheckbox = "Option_UseWand", reqLevel = 5, type="wand"}
+		    }
+		})
+	end
 
 	local _, Class, classId = UnitClass("player")
 	local Color = RAID_CLASS_COLORS[Class]
