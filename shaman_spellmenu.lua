@@ -161,19 +161,15 @@ function ConROC:SpellmenuClass()
 		    frameName = "Options",
 		    spells = {
 		    	{spellID = "AoE toggle Button", spellCheckbox = "Option_AoE", reqLevel = 20, type="aoetoggler"},
-		    	--{spellID = "Use Wand", spellCheckbox = "Option_UseWand", reqLevel = 5, type="wand"}
 		    }
 		})
 	else
 		table.insert(ConROC_RotationSettingsTable, {
 		    frameName = "Options",
 		    spells = {
-		    	--{spellID = "Use Prepull actions", spellCheckbox = "Option_PrePull", reqLevel = 15, type="custom", icon=237511, customName="Use Prepull actions"},
 			    {spellID = ids.optionMaxIds.RockbiterWeapon, spellCheckbox = "Option_Imbue", reqLevel = 1, type="custom", icon=136086, customName="Weapon imbue reminder"},
 			    {spellID = ids.optionMaxIds.SearingTotem, spellCheckbox = "Option_Totems", reqLevel = 10, type="custom", icon=310730, customName="Suggest totems in rotation"},
-		    	--{spellID = ids.optionMaxIds.LightningShield, spellCheckbox = "Option_Shields", reqLevel = 1, type="custom", icon=310730, customName="Suggest shields"},
 		    	{spellID = "AoE toggle Button", spellCheckbox = "Option_AoE", reqLevel = 20, type="aoetoggler"},
-		    	--{spellID = "Use Wand", spellCheckbox = "Option_UseWand", reqLevel = 5, type="wand"}
 		    }
 		})
 	end

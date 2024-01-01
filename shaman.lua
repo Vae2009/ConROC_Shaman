@@ -622,24 +622,29 @@ ConROC:UpdateSpellID()
         if eShockR1RDY and (ConROC:TalentChosen(Spec.Elemental, Ele_Talent.ElementalFocus) or ConROC:TalentChosen(Spec.Elemental, Ele_Talent.ElementalDevastation)) then
             return Ele_Ability.EarthShockRank1;
         end
-        if searTotemRDY and searTotemDUR < 0.1 then
-            return _SearingTotem;
-        end
---[[    if (searTotemRDY or mTotemRDY) and (searTotemDUR < 0.1 or mTotemDUR < 0.1) then
+        if not IsAddOnLoaded("TotemTimers") or ConROC:CheckBox(ConROC_SM_Option_Totems) then --only if not the addon TotemTimers is loaded
             if searTotemRDY and searTotemDUR < 0.1 then
                 return _SearingTotem;
-            elseif mTotemRDY and mTotemDUR < 0.1 and tarInMelee > 2 then
-                return _MagmaTotem;
             end
-        end--]]
+            --[[
+            if (searTotemRDY or mTotemRDY) and (searTotemDUR < 0.1 or mTotemDUR < 0.1) then
+                if searTotemRDY and searTotemDUR < 0.1 then
+                    return _SearingTotem;
+                elseif mTotemRDY and mTotemDUR < 0.1 and tarInMelee > 2 then
+                    return _MagmaTotem;
+                end
+            end
+            --]]
+        end
 		return nil
 	elseif currentSpecName == "Elemental" then
-
-        if (not ConROC_AoEButton:IsVisible() or (not inMelee or tarInMelee < 2)) and searTotemRDY and searTotemDUR < 0.1 then
-            return _SearingTotem;
-        end
-        if (ConROC_AoEButton:IsVisible() or tarInMelee > 2) and fnTotemRDY and fnTotemDUR < 0.1 then
-            return _FireNovaTotem;
+        if not IsAddOnLoaded("TotemTimers") or ConROC:CheckBox(ConROC_SM_Option_Totems) then --only if not the addon TotemTimers is loaded
+            if (not ConROC_AoEButton:IsVisible() or (not inMelee or tarInMelee < 2)) and searTotemRDY and searTotemDUR < 0.1 then
+                return _SearingTotem;
+            end
+            if (ConROC_AoEButton:IsVisible() or tarInMelee > 2) and fnTotemRDY and fnTotemDUR < 0.1 then
+                return _FireNovaTotem;
+            end
         end
 		if eMastRDY  and incombat then
 			return _ElementalMastery;
