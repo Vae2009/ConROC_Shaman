@@ -1,3 +1,5 @@
+Ver 1.15.3
+	-Imbue check fix, don't run or show if in combat.
 Ver 1.15.2
 	-Totems check fix
 Ver 1.5.1

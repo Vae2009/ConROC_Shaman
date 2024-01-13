@@ -494,7 +494,7 @@ ConROC:UpdateSpellID()
 	--print(offHandType())
 --Indicators
 --Warnings
-    if not (mounted or onVehicle or resting) then
+    if not (mounted or onVehicle or resting) and not incombat then
     	_tickerVar = _tickerVar + 1
         local hasMainHandEnchant,
             mainHandExpiration,
@@ -862,7 +862,7 @@ function ConROC:CreateImbueFrame()
     local ohName = ""
     local ohTexture = nil --select(5, GetItemInfoInstant(_DeadlyPoison.id))
     local frame = CreateFrame("Frame", "ConROCApplyImbueFrame", UIParent, "BackdropTemplate")
-
+    RegisterStateDriver(frame, "visibility", "[combat] hide; nil")
     frame:SetFrameStrata("MEDIUM")
     frame:SetFrameLevel("4")
     frame:SetSize(128 + 8, 64 + 8)
