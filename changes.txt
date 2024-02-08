@@ -1,17 +1,21 @@
+Ver 1.15.4
+    -Rune support added: Lava Burst, Lava Lash, Molten Blast, Shamanic Rage, Water Shield
+    -Tank rotation added, if Tank selected in Spellmenu
+    -talents and spec check reworked due to error for client languages
 Ver 1.15.3
-	-Imbue check fix, don't run or show if in combat.
+    -Imbue check fix, don't run or show if in combat.
 Ver 1.15.2
-	-Totems check fix
+    -Totems check fix
 Ver 1.5.1
-	-Added check if TotemTimers is installed, and an override option if it is.
+    -Added check if TotemTimers is installed, and an override option if it is.
 Ver 1.5.0
-	-Support for Classic
-	-Started to add support for translations.
+    -Support for Classic
+    -Started to add support for translations.
 Ver 1.13.2
-	-Overhauled Rotation.
+    -Overhauled Rotation.
 
 Ver 1.13.1
-	-Minor update.
+    -Minor update.
 
 Ver 1.13.0
-	-Initial release for Classic WoW.
+    -Initial release for Classic WoW.

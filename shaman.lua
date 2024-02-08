@@ -12,6 +12,7 @@ ConROC.Shaman = {};
 local ConROC_Shaman, ids = ...;
 local optionMaxIds = ...;
 local currentSpecName;
+local currentSpecID;
 local _tickerVar = 10;
 local _mhP = nil;
 local _ohP = nil;
@@ -76,37 +77,28 @@ function ConROC:PopulateTalentIDs()
     local numTabs = GetNumTalentTabs()
     
     for tabIndex = 1, numTabs do
-        local tabName = GetTalentTabInfo(tabIndex) .. "_Talent"
-        tabName = string.gsub(tabName, "%s", "") -- Remove spaces from tab name
-        if printTalentsMode then
-        	print(tabName..": ")
-        else
-        	ids[tabName] = {}
-    	end
-        
+        local tabName = GetTalentTabInfo(tabIndex)
+        tabName = string.gsub(tabName, "[^%w]", "") .. "_Talent" -- Remove spaces from tab name
+        print("ids."..tabName.." = {")
         local numTalents = GetNumTalents(tabIndex)
 
         for talentIndex = 1, numTalents do
             local name, _, _, _, _ = GetTalentInfo(tabIndex, talentIndex)
 
             if name then
-                local talentID = string.gsub(name, "%s", "") -- Remove spaces from talent name
-                if printTalentsMode then
-                	print(talentID .." = ID no: ", talentIndex)
-                else
-                	ids[tabName][talentID] = talentIndex
-                end
+                local talentID = string.gsub(name, "[^%w]", "") -- Remove spaces from talent name
+                    print(talentID .." = ", talentIndex ..",")
             end
         end
+        print("}")
     end
-    if printTalentsMode then printTalentsMode = false end
 end
-ConROC:PopulateTalentIDs()
 
 local Racial, Spec, Ele_Ability, Ele_Talent, Enh_Ability, Enh_Talent, Resto_Ability, Resto_Talent, Player_Buff, Player_Debuff, Target_Debuff = ids.Racial, ids.Spec, ids.Ele_Ability, ids.Elemental_Talent, ids.Enh_Ability, ids.Enhancement_Talent, ids.Resto_Ability, ids.Restoration_Talent, ids.Player_Buff, ids.Player_Debuff, ids.Target_Debuff;
 
 function ConROC:SpecUpdate()
 	currentSpecName = ConROC:currentSpec()
+    currentSpecID = ConROC:currentSpec("ID")
 
 	if currentSpecName then
 	   ConROC:Print(self.Colors.Info .. "Current spec:", self.Colors.Success ..  currentSpecName)
@@ -155,6 +147,13 @@ local _HealingStreamTotem = Resto_Ability.HealingStreamTotemRank1;
 local _HealingWave = Resto_Ability.HealingWaveRank1;
 local _ManaSpringTotem = Resto_Ability.ManaSpringTotemRank1;
 local _ManaTideTotem = Resto_Ability.ManaTideTotemRank1;
+
+--Runes
+local _LavaBurst = ids.Runes.LavaBurst;
+local _LavaLash = ids.Runes.LavaLash;
+local _MoltenBlast = ids.Runes.MoltenBlast;
+local _ShamanisticRage = ids.Runes.ShamanisticRage;
+local _WaterShield = ids.Runes.WaterShield;
 
 function ConROC:UpdateSpellID()
 --Ranks
@@ -333,7 +332,6 @@ ids.optionMaxIds = {
 	FireNovaTotem = _FireNovaTotem,
 	FlameShock = _FlameShock,
 	FrostShock = _FrostShock,
-	LavaBurst = _LavaBurst,
 	LightningBolt = _LightningBolt,
 	MagmaTotem = _MagmaTotem,
 	Purge = _Purge,
@@ -353,7 +351,6 @@ ids.optionMaxIds = {
 	FrostbrandWeapon = _FrostbrandWeapon,
 	GraceofAirTotem = _GraceofAirTotem,
 	Heroism = _Heroism,
-	LavaLash = _LavaLash,
 	LightningShield = _LightningShield,
 	NatureResistanceTotem = _NatureResistanceTotem,
 	RockbiterWeapon = _RockbiterWeapon,
@@ -373,6 +370,12 @@ ids.optionMaxIds = {
 	HealingWave = _HealingWave,
 	ManaSpringTotem = _ManaSpringTotem,
 	ManaTideTotem = _ManaTideTotem,
+    --Runes
+    LavaBurst = _LavaBurst,
+    LavaLash = _LavaLash,
+    MoltenBlast = _MoltenBlast,
+    WaterShield = _WaterShield,
+
 }
 end
 ConROC:UpdateSpellID()
@@ -408,8 +411,6 @@ ConROC:UpdateSpellID()
 --Abilities	
 	local lBoltRDY											= ConROC:AbilityReady(_LightningBolt, timeShift);
 	local chainLRDY											= ConROC:AbilityReady(_ChainLightning, timeShift);
---	local lBurstRDY											= ConROC:AbilityReady(_LavaBurst, timeShift);
---	local lLashRDY											= ConROC:AbilityReady(_LavaLash, timeShift);
 	local eShockRDY											= ConROC:AbilityReady(_EarthShock, timeShift);
         local eShockDEBUFF, _, eShockDUR                        = ConROC:TargetDebuff(_EarthShock, timeShift);
 		local eShockR1RDY										= ConROC:AbilityReady(Ele_Ability.EarthShockRank1, timeShift);	
@@ -417,6 +418,7 @@ ConROC:UpdateSpellID()
 	local fShockRDY											= ConROC:AbilityReady(_FlameShock, timeShift);
 		local fShockDEBUFF, _, fShockDUR						= ConROC:TargetDebuff(_FlameShock, timeShift);
 	local frShockRDY										= ConROC:AbilityReady(_FrostShock, timeShift);
+        local frShockDEBUFF, _, frShockDUR                        = ConROC:TargetDebuff(_FrostShock, timeShift);
 	local eMastRDY											= ConROC:AbilityReady(_ElementalMastery, timeShift);
 	local purgeRDY											= ConROC:AbilityReady(_Purge, timeShift);
     if ConROC:TalentChosen(Spec.Enhancement, Enh_Talent.Stormstrike) then
@@ -473,6 +475,12 @@ ConROC:UpdateSpellID()
 	local cCastingBuff										= ConROC:Buff(Player_Buff.Clearcasting, timeShift);
 --	local MStromWpn, MStromWpnCount							= ConROC:Buff(Player_Buff.MaelstromWpn, timeShift);	
 
+--Runes
+    local lBurstRDY                                         = ConROC:AbilityReady(_LavaBurst, timeShift);
+    local lLashRDY                                          = ConROC:AbilityReady(_LavaLash, timeShift);
+    local mBlastRDY                                         = ConROC:AbilityReady(_MoltenBlast, timeShift);
+    local sRageRDY                                          = ConROC:AbilityReady(_ShamanisticRage, timeShift);
+    
 --Conditions
 	local incombat 											= UnitAffectingCombat('player');
     local resting = IsResting()
@@ -493,6 +501,8 @@ ConROC:UpdateSpellID()
 	end
 	--print(offHandType())
 --Indicators
+    ConROC:AbilityInterrupt(_EarthShock, ConROC:Interrupt() and _EarthShock)
+
 --Warnings
     if not (mounted or onVehicle or resting) and not incombat then
     	_tickerVar = _tickerVar + 1
@@ -606,7 +616,56 @@ ConROC:UpdateSpellID()
     end
 --]]
 	--Rotations
-	if currentSpecName == "Enhancement" then
+
+    if ConROC.Seasons.IsSoD then
+        if plvl < 10 or ConROC:CheckBox(ConROC_SM_Role_Caster) then
+            if eShockRDY and (cCastingBuff or ((targetPh <= 5 and ConROC:Raidmob()) or (targetPh <= 20 and not ConROC:Raidmob())) or not IsSpellKnown(_FlameShock) ) then
+                return _EarthShock;
+            end
+            if fShockRDY and not fShockDEBUFF then
+                return _FlameShock;
+            end
+            if lBurstRDY and fShockDEBUFF then
+                return _LavaBurst;
+            end
+            if ConROC_AoEButton:IsVisible() then
+                if chainLRDY then
+                    return _ChainLightning
+                end
+            end
+            if lBoltRDY then
+                return _LightningBolt;
+            end
+        end
+        if plvl < 10 or ConROC:CheckBox(ConROC_SM_Role_Melee) then
+            if eShockRDY and (cCastingBuff or ((targetPh <= 5 and ConROC:Raidmob()) or (targetPh <= 20 and not ConROC:Raidmob())) or not IsSpellKnown(_FlameShock) ) then
+                return _EarthShock;
+            end
+            if fShockRDY and not fShockDEBUFF then
+                return _FlameShock;
+            end
+            if lLashRDY then
+                return _LavaLash
+            end
+            if mBlastRDY then
+                return _MoltenBlast
+            end
+        end
+        if plvl < 10 or ConROC:CheckBox(ConROC_SM_Role_Tank) then            
+            if fShockRDY and not fShockDEBUFF then
+                return _FlameShock;
+            end
+            if mBlastRDY then
+                return _MoltenBlast
+            end
+            if frShockRDY and fShockDEBUFF and not frShockDEBUFF then
+                return _FlameShock;
+            end           
+        end
+        return nil
+    end
+    --not SoD
+	if currentSpecID == ids.Spec.Enhancement then
 		if lBoltRDY and not inMelee then
 			return _LightningBolt;
 		end
@@ -637,7 +696,7 @@ ConROC:UpdateSpellID()
             --]]
         end
 		return nil
-	elseif currentSpecName == "Elemental" then
+	elseif currentSpecID == ids.Spec.Elemental then
         if not IsAddOnLoaded("TotemTimers") or ConROC:CheckBox(ConROC_SM_Option_Totems) then --only if not the addon TotemTimers is loaded
             if (not ConROC_AoEButton:IsVisible() or (not inMelee or tarInMelee < 2)) and searTotemRDY and searTotemDUR < 0.1 then
                 return _SearingTotem;
@@ -718,7 +777,8 @@ function ConROC.Shaman.Defense(_, timeShift, currentSpell, gcd)
 --Abilities	
 	local lShieldRDY										= ConROC:AbilityReady(_LightningShield, timeShift);
 		local lShieldBUFF										= ConROC:Buff(_LightningShield, timeShift);
-	
+	local wShieldRDY                                        = ConROC:AbilityReady(_WaterShield, timeShift);
+
 --Conditions
 	local incombat 											= UnitAffectingCombat('player');
 	local moving 											= ConROC:PlayerSpeed();

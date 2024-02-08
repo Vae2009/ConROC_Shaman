@@ -115,6 +115,12 @@ function ConROC:SpellmenuClass()
 			role = "ConROC_SM_Role_Melee",
 		},
 		{
+			frameName = "Tank",
+			activeTexture = ConROC.Textures.Tank,
+			disabledTexture = ConROC.Textures.Tank_disabled,
+			role = "ConROC_SM_Role_Tank",
+		},
+		{
 			frameName = "PvP",
 			activeTexture = ConROC.Textures.PvP,
 			disabledTexture = ConROC.Textures.PvP_disabled,
@@ -812,7 +818,7 @@ function ConROC:SpellMenuUpdate(newSpell)
 						oItem:SetPoint("TOPLEFT", lFrame, "BOTTOMLEFT", 0, 0);
 					end
 					if type(_spellData.spellID) == "number" then
-						if plvl >= _spellData.reqLevel and IsSpellKnown(_spellData.spellID) then
+						if plvl >= _spellData.reqLevel and (IsSpellKnown(_spellData.spellID) or IsSpellKnownOrOverridesKnown(_spellData.spellID)) then
 							lFrame = oItem;
 							lFrame:Show();
 							if oItem:IsShown() then
@@ -900,7 +906,7 @@ function ConROC:SpellMenuUpdate(newSpell)
 					else
 						oItem:SetPoint("TOPLEFT", lFrame, "BOTTOMLEFT", 0, 0);
 					end
-					if plvl >= _spellData.reqLevel and IsSpellKnown(_spellData.spellID) then													
+					if plvl >= _spellData.reqLevel and (IsSpellKnown(_spellData.spellID) or IsSpellKnownOrOverridesKnown(_spellData.spellID)) then
 						lFrame = oItem;
 						lFrame:Show();
 							if oItem:IsShown() then
