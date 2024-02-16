@@ -486,7 +486,7 @@ ConROC:UpdateSpellID()
     local resting = IsResting()
     local mounted = IsMounted()
     local onVehicle = UnitHasVehicleUI("player")
-	local inMelee											= CheckInteractDistance('target', 3);
+	local inMelee											= ConROC:IsMeleeRange()--CheckInteractDistance('target', 3);
 	local targetPh 											= ConROC:PercentHealth('target');
 	local moving 											= ConROC:PlayerSpeed();
 	local hasMHEnch, _, mhCharges, mhEnchID, hasOHEnch, _, ohCharges, ohEnchId = GetWeaponEnchantInfo();
