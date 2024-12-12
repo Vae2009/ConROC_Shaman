@@ -64,7 +64,7 @@ ConROC.totemVariables = {
 }
 function ConROC:PLAYER_TOTEM_UPDATE()
     if ConROC:CheckBox(ConROC_SM_Option_Totems) then
-    	local totems = ids.Player_Totems;
+    	local totems = ids.Totems;
         for i = 1, 4 do
             local haveTotem, totemName, startTime, duration, icon = GetTotemInfo(i)
             if haveTotem and totemName ~= nil then
@@ -105,10 +105,10 @@ local _Mana, _Mana_Max = ConROC:PlayerPower('Mana');
 --Conditions
 local _Queue = 0;
 local _is__is_moving = ConROC:PlayerSpeed();
---local _enemies_in_melee, _target_in_melee = ConROC:Targets("Melee");
---local _enemies_in_10yrds, _target_in_10yrds = ConROC:Targets("10");
---local _enemies_in_25yrds, _target_in_25yrds = ConROC:Targets("25");
---local _enemies_in_40yrds, _target_in_40yrds = ConROC:Targets("40");
+local _enemies_in_melee, _target_in_melee = ConROC:Targets("Melee");
+local _enemies_in_10yrds, _target_in_10yrds = ConROC:Targets("10");
+local _enemies_in_20yrds, _target_in_20yrds = ConROC:Targets("20");
+local _enemies_in_40yrds, _target_in_40yrds = ConROC:Targets("40");
 local _can_Execute = _Target_Percent_Health < 20;
 
 --Racials
@@ -129,10 +129,10 @@ function ConROC:Stats()
 
 	_Queue = 0;
 	_is_moving = ConROC:PlayerSpeed();
---	_enemies_in_melee, _target_in_melee = ConRO:Targets("Melee");
---	_enemies_in_10yrds, _target_in_10yrds = ConRO:Targets("10");
---	_enemies_in_25yrds, _target_in_25yrds = ConRO:Targets("25");
---	_enemies_in_40yrds, _target_in_40yrds = ConRO:Targets("40");
+	_enemies_in_melee, _target_in_melee = ConROC:Targets("Melee");
+	_enemies_in_10yrds, _target_in_10yrds = ConROC:Targets("10");
+	_enemies_in_20yrds, _target_in_20yrds = ConROC:Targets("20");
+	_enemies_in_40yrds, _target_in_40yrds = ConROC:Targets("40");
 	_can_Execute = _Target_Percent_Health < 20;
 
 	_Berserking, _Berserking_RDY = ConROC:AbilityReady(Racial.Berserking, timeShift);
@@ -308,10 +308,10 @@ function ConROC.Shaman.Damage(_, timeShift, currentSpell, gcd)
     else
         if ConROCApplyImbueFrame:IsShown() then ConROCApplyImbueFrame:Hide() end
     end
---]]
-	--Rotations
 
-    --[[if ConROC.Seasons.IsSoD then
+--Rotations
+
+    if ConROC.Seasons.IsSoD then
         if _Player_Level < 10 or ConROC:CheckBox(ConROC_SM_Role_Caster) then
             if _EarthShock_RDY and (_Clearcasting_BUFF or ((_Target_Percent_Health <= 5 and ConROC:Raidmob()) or (_Target_Percent_Health <= 20 and not ConROC:Raidmob())) or not IsSpellKnown(_FlameShock) ) then
                 return _EarthShock;
@@ -358,7 +358,7 @@ function ConROC.Shaman.Damage(_, timeShift, currentSpell, gcd)
         end
         return nil
     end
-    --not SoD]]
+    --not SoD
 	if currentSpecID == ids.Spec.Enhancement then
 		if _LightningBolt_RDY and not inMelee then
 			return _LightningBolt;
