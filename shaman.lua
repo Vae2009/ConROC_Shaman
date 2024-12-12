@@ -159,7 +159,7 @@ function ConROC.Shaman.Damage(_, timeShift, currentSpell, gcd)
 	local _ElementalMastery, _ElementalMastery_RDY = ConROC:AbilityReady(Ability.ElementalMastery, timeShift);
 	local _Purge, _Purge_RDY = ConROC:AbilityReady(Ability.Purge, timeShift);
     local _Stormstrike, _Stormstrike_RDY = ConROC:AbilityReady(Ability.Stormstrike, timeShift);
-    
+
     local _FlametongueWeapon, _FlametongueWeapon_RDY = ConROC:AbilityReady(Ability.FlametongueWeapon, timeShift);
     local _FlametongueWeaponDR, _FlametongueWeaponDR_RDY = ConROC:AbilityReady(Ability.FlametongueWeaponDR, timeShift);
     local _FrostbrandWeapon, _FrostbrandWeapon_RDY = ConROC:AbilityReady(Ability.FrostbrandWeapon, timeShift);

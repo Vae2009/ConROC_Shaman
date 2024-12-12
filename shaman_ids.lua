@@ -118,6 +118,7 @@ ids.Rank = {
 	FlametongueTotemRank2 = 8249,
 	FlametongueTotemRank3 = 10526,
 	FlametongueTotemRank4 = 16387,
+	FlametongueWeaponRank1 = 8024,
 	FlametongueWeaponRank2 = 8027,
 	FlametongueWeaponRank3 = 8030,
 	FlametongueWeaponRank4 = 16339,
