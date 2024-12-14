@@ -98,6 +98,7 @@ local function CheckScrollbarVisibility()
 end
 
 function ConROC:SpellmenuClass()
+	ConROC:UpdateSpellID();
 	ConROC_RoleSettingsTable = {
 		{
 			frameName = "Caster",
