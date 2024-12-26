@@ -949,5 +949,3 @@ function ConROC:RoleProfile()
 	    end
 	end
 end
-
-ConROC:SpellmenuClass();

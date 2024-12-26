@@ -1,8 +1,6 @@
 ConROC.Shaman = {};
 
 local ConROC_Shaman, ids = ...;
-local currentSpecName;
-local currentSpecID;
 
 function ConROC:EnableRotationModule()
 	self.Description = 'Shaman';
@@ -10,8 +8,9 @@ function ConROC:EnableRotationModule()
 
 	self:RegisterEvent('UNIT_SPELLCAST_SUCCEEDED');
 	self:RegisterEvent('PLAYER_TOTEM_UPDATE');
-	self:RegisterEvent("PLAYER_TALENT_UPDATE");
 	self.lastSpellId = 0;
+
+    ConROC:SpellmenuClass();
 end
 
 function ConROC:EnableDefenseModule()
@@ -23,19 +22,6 @@ function ConROC:UNIT_SPELLCAST_SUCCEEDED(event, unitID, lineID, spellID)
 		self.lastSpellId = spellID;
 	end
 end
-
-function ConROC:SpecUpdate()
-	currentSpecName = ConROC:currentSpec()
-    currentSpecID = ConROC:currentSpec("ID")
-
-	if currentSpecName then
-	   ConROC:Print(self.Colors.Info .. "Current spec:", self.Colors.Success ..  currentSpecName)
-	else
-	   ConROC:Print(self.Colors.Error .. "You do not currently have a spec.")
-	end
-end
-
-ConROC:SpecUpdate()
 
 ConROC.totemVariables = {
     eeTotemEXP = 0,
@@ -62,6 +48,7 @@ ConROC.totemVariables = {
     woaTotemEXP = 0,
     -- Add more variables as needed
 }
+
 function ConROC:PLAYER_TOTEM_UPDATE()
     if ConROC:CheckBox(ConROC_SM_Option_Totems) then
     	local totems = ids.Totems;
@@ -79,7 +66,7 @@ function ConROC:PLAYER_TOTEM_UPDATE()
     end
 end
 
-local Racial, Spec, Ability, Rank, Ele_Talent, Enh_Talent, Resto_Talent, Runes, Buff, Debuff = ids.Racial, ids.Spec, ids.Ability, ids.Rank, ids.Elemental_Talent, ids.Enhancement_Talent, ids.Restoration_Talent, ids.Runes, ids.Buff, ids.Debuff;
+local Racial, Spec, Ability, Rank, Ele_Talent, Enh_Talent, Resto_Talent, Engrave, Runes, Buff, Debuff = ids.Racial, ids.Spec, ids.Ability, ids.Rank, ids.Elemental_Talent, ids.Enhancement_Talent, ids.Restoration_Talent, ids.Engrave, ids.Runes, ids.Buff, ids.Debuff;
 local _tickerVar = 10;
 local _mhP = nil;
 local _ohP = nil;
@@ -89,6 +76,7 @@ local _mhAlpha = 1;
 local _ohAlpha = 1;
 
 --Info
+local _Player_Spec, _Player_Spec_ID = ConROC:currentSpec();
 local _Player_Level = UnitLevel("player");
 local _Player_Percent_Health = ConROC:PercentHealth('player');
 local _is_PvP = ConROC:IsPvP();
@@ -115,6 +103,7 @@ local _can_Execute = _Target_Percent_Health < 20;
 local _Berserking, _Berserking_RDY = _, _;
 
 function ConROC:Stats()
+	_Player_Spec, _Player_Spec_ID = ConROC:currentSpec();
 	_Player_Level = UnitLevel("player");
 	_Player_Percent_Health = ConROC:PercentHealth('player');
 	_is_PvP = ConROC:IsPvP();
@@ -136,11 +125,6 @@ function ConROC:Stats()
 	_can_Execute = _Target_Percent_Health < 20;
 
 	_Berserking, _Berserking_RDY = ConROC:AbilityReady(Racial.Berserking, timeShift);
-end
-
-function ConROC:PLAYER_TALENT_UPDATE()
-	ConROC:SpecUpdate();
-    ConROC:closeSpellmenu();
 end
 
 function ConROC.Shaman.Damage(_, timeShift, currentSpell, gcd)
@@ -285,25 +269,25 @@ function ConROC.Shaman.Damage(_, timeShift, currentSpell, gcd)
             end
 
             if (mainHandEnchantID ~= _mhEnchID or offHandEnchantId ~= _ohEnchID) and (_mhP ~= "none" or _ohP ~= "none") then
-            if ConROC:CheckBox(ConROC_SM_Option_Imbue) then --and not (resting or _in_combat or mounted or onVehicle) then
-                ConROC:ApplyImbue(_mhP, _mhTexture, _ohP, _ohTexture)
-                if not ConROCApplyImbueFrame:IsShown() then
-                    ConROCApplyImbueFrame:Show()
+                if ConROC:CheckBox(ConROC_SM_Option_Imbue) then --and not (resting or _in_combat or mounted or onVehicle) then
+                    ConROC:ApplyImbue(_mhP, _mhTexture, _ohP, _ohTexture)
+                    if not ConROCApplyImbueFrame:IsShown() then
+                        ConROCApplyImbueFrame:Show()
+                    end
                 end
             end
-        end
-        if ConROCApplyImbueFrame:IsShown() then
-            if not ConROC:CheckBox(ConROC_SM_Option_Imbue) or
-                --(resting or mounted or onVehicle and not _in_combat) or 
-                (_mhP == "none" and _ohP == "none") or
-                    (mainHandEnchantID == _mhEnchID and
-                        offHandEnchantId == _ohEnchID) or
-                    (mainHandEnchantID == _mhEnchID and _ohP == "none") or
-                    (offHandEnchantId == _ohEnchID and _mhP == "none")
-             then
-                ConROCApplyImbueFrame:Hide()
+            if ConROCApplyImbueFrame:IsShown() then
+                if not ConROC:CheckBox(ConROC_SM_Option_Imbue) or
+                    --(resting or mounted or onVehicle and not _in_combat) or 
+                    (_mhP == "none" and _ohP == "none") or
+                        (mainHandEnchantID == _mhEnchID and
+                            offHandEnchantId == _ohEnchID) or
+                        (mainHandEnchantID == _mhEnchID and _ohP == "none") or
+                        (offHandEnchantId == _ohEnchID and _mhP == "none")
+                then
+                    ConROCApplyImbueFrame:Hide()
+                end
             end
-        end
         end
     else
         if ConROCApplyImbueFrame:IsShown() then ConROCApplyImbueFrame:Hide() end
@@ -359,7 +343,7 @@ function ConROC.Shaman.Damage(_, timeShift, currentSpell, gcd)
         return nil
     end
     --not SoD
-	if currentSpecID == ids.Spec.Enhancement then
+	if _Player_Spec_ID == ids.Spec.Enhancement then
 		if _LightningBolt_RDY and not inMelee then
 			return _LightningBolt;
 		end
@@ -390,7 +374,7 @@ function ConROC.Shaman.Damage(_, timeShift, currentSpell, gcd)
             --]]
         end
 		return nil
-	elseif currentSpecID == ids.Spec.Elemental then
+	elseif _Player_Spec_ID == ids.Spec.Elemental then
         if not IsAddOnLoaded("TotemTimers") or ConROC:CheckBox(ConROC_SM_Option_Totems) then --only if not the addon TotemTimers is loaded
             if (not ConROC_AoEButton:IsVisible() or (not inMelee or tarInMelee < 2)) and _SearingTotem_RDY and _SearingTotem_DUR < 0.1 then
                 return _SearingTotem;
