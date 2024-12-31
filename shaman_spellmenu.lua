@@ -97,8 +97,9 @@ local function CheckScrollbarVisibility()
     end
 end
 
-function ConROC:SpellmenuClass()
-	ConROC:UpdateSpellID();
+function ConROC:RotationChoices()
+    ConROC:UpdateSpellID();
+
 	ConROC_RoleSettingsTable = {
 		{
 			frameName = "Caster",
@@ -127,56 +128,51 @@ function ConROC:SpellmenuClass()
 	}
 	ConROC_RotationSettingsTable = {
 		{
-	    frameName = "MH Weapon Imbues",
-	    spells = {
-	      {spellID = ids.Ability.FlametongueWeapon, spellCheckbox = "MH_FlametongueWeapon", reqLevel = 10, type="spell"},
-	      {spellID = ids.Ability.FrostbrandWeapon, spellCheckbox = "MH_FrostbrandWeapon", reqLevel = 20, type="spell"},
-	      {spellID = ids.Ability.RockbiterWeapon, spellCheckbox = "MH_RockbiterWeapon", reqLevel = 1, type="spell"},
-	      --{spellID = ids.Ability.EarthlivingWeapon, spellCheckbox = "MH_EarthlivingWeapon", reqLevel = 30, type="spell"},
-	      {spellID = ids.Ability.WindfuryWeapon, spellCheckbox = "MH_WindfuryWeapon", reqLevel = 30, type="spell"},
-	      {spellID = "None", spellCheckbox = "MH_None", reqLevel = 1, type="none"}
-	    },
-	    groupType = "radioButtons"
-	  },
-	  {
-	    frameName = "OH Weapon Imbues",
-	    spells = {
-	      {spellID = ids.Ability.FlametongueWeapon, spellCheckbox = "OH_FlametongueWeapon", reqLevel = 10, type="spell"},
-	      {spellID = ids.Ability.FrostbrandWeapon, spellCheckbox = "OH_FrostbrandWeapon", reqLevel = 20, type="spell"},
-	      {spellID = ids.Ability.RockbiterWeapon, spellCheckbox = "OH_RockbiterWeapon", reqLevel = 1, type="spell"},
-	      --{spellID = ids.Ability.EarthlivingWeapon, spellCheckbox = "OH_EarthlivingWeapon", reqLevel = 30, type="spell"},
-	      {spellID = ids.Ability.WindfuryWeapon, spellCheckbox = "OH_WindfuryWeapon", reqLevel = 30, type="spell"},
-	      {spellID = "None", spellCheckbox = "OH_None", reqLevel = 1, type="none"}
-	    },
-	    groupType = "radioButtons"
-	  }
+		frameName = "MH Weapon Imbues",
+		spells = {
+			{spellID = ids.Ability.FlametongueWeapon, spellCheckbox = "MH_FlametongueWeapon", reqLevel = 10, type="spell"},
+			{spellID = ids.Ability.FrostbrandWeapon, spellCheckbox = "MH_FrostbrandWeapon", reqLevel = 20, type="spell"},
+			{spellID = ids.Ability.RockbiterWeapon, spellCheckbox = "MH_RockbiterWeapon", reqLevel = 1, type="spell"},
+			{spellID = ids.Ability.WindfuryWeapon, spellCheckbox = "MH_WindfuryWeapon", reqLevel = 30, type="spell"},
+			{spellID = "None", spellCheckbox = "MH_None", reqLevel = 1, type="none"}
+		},
+		groupType = "radioButtons"
+		},
+		{
+		frameName = "OH Weapon Imbues",
+		spells = {
+			{spellID = ids.Ability.FlametongueWeapon, spellCheckbox = "OH_FlametongueWeapon", reqLevel = 10, type = "spell"},
+			{spellID = ids.Ability.FrostbrandWeapon, spellCheckbox = "OH_FrostbrandWeapon", reqLevel = 20, type = "spell"},
+			{spellID = ids.Ability.RockbiterWeapon, spellCheckbox = "OH_RockbiterWeapon", reqLevel = 1, type = "spell"},
+			{spellID = ids.Ability.WindfuryWeapon, spellCheckbox = "OH_WindfuryWeapon", reqLevel = 30, type = "spell"},
+			{spellID = "None", spellCheckbox = "OH_None", reqLevel = 1, type="none"}
+		},
+		groupType = "radioButtons"
+		},
+		{
+		frameName = "Options",
+		spells = {
+			{spellID = ids.Ability.RockbiterWeapon, spellCheckbox = "Option_Imbue", reqLevel = 1, type="custom", icon=136086, customName="Weapon imbue reminder"},
+			{spellID = ids.Ability.SearingTotem, spellCheckbox = "Option_Totems", reqLevel = 10, type="custom", icon=310730, customName="Suggest totems in rotation"},
+			{spellID = "AoE toggle Button", spellCheckbox = "Option_AoE", reqLevel = 20, type="aoetoggler"},
+		}
+		}
 	}
-	if IsAddOnLoaded("TotemTimers") then
-	  -- Include section related to TotemTimers
-	  table.insert(ConROC_RotationSettingsTable, {
-	    frameName = "Override TotemTimers",
+	if ConROC.Seasons.IsSoD then
+	  	table.insert(ConROC_RotationSettingsTable, 3,
+		{
+	    frameName = "Shields",
 	    spells = {
-	        {spellID = ids.Ability.RockbiterWeapon, spellCheckbox = "Option_Imbue", reqLevel = 1, type="custom", icon=136086, customName="Weapon imbue reminder"},
-		    {spellID = ids.Ability.SearingTotem, spellCheckbox = "Option_Totems", reqLevel = 10, type="custom", icon=310730, customName="Suggest totems in rotation"},
-	    	{spellID = ids.Ability.LightningShield, spellCheckbox = "Option_Shields", reqLevel = 1, type="custom", icon=310730, customName="Suggest shields"},
-	    }
-	  })
-	  table.insert(ConROC_RotationSettingsTable, {
-		    frameName = "Options",
-		    spells = {
-		    	{spellID = "AoE toggle Button", spellCheckbox = "Option_AoE", reqLevel = 20, type="aoetoggler"},
-		    }
-		})
-	else
-		table.insert(ConROC_RotationSettingsTable, {
-		    frameName = "Options",
-		    spells = {
-			    {spellID = ids.Ability.RockbiterWeapon, spellCheckbox = "Option_Imbue", reqLevel = 1, type="custom", icon=136086, customName="Weapon imbue reminder"},
-			    {spellID = ids.Ability.SearingTotem, spellCheckbox = "Option_Totems", reqLevel = 10, type="custom", icon=310730, customName="Suggest totems in rotation"},
-		    	{spellID = "AoE toggle Button", spellCheckbox = "Option_AoE", reqLevel = 20, type="aoetoggler"},
-		    }
-		})
+	        {spellID = ids.Ability.LightningShield, spellCheckbox = "Shield_LightningShield", reqLevel = 8, type = "spell"},
+		    {spellID = ids.Runes.WaterShield, spellCheckbox = "Shield_WaterShield", reqLevel = 1, type = "spell"},
+		},
+		groupType = "radioButtons"
+	 	})
 	end
+end
+
+function ConROC:SpellmenuClass()
+	ConROC:RotationChoices();
 
 	local _, Class, classId = UnitClass("player")
 	local Color = RAID_CLASS_COLORS[Class]
@@ -718,8 +714,9 @@ function ConROC:OptionNone(_spellData, i, j, _spellFrame, _checkType, _radioButt
     lastFrame:Show();
 end
 
-function ConROC:SpellMenuUpdate(newSpell)
-	ConROC:UpdateSpellID();
+function ConROC:SpellMenuUpdate()
+	ConROC:RotationChoices();
+
 	lastFrame = ConROCScrollChild;
 	local anyHLVisible = false;
 	scrollHeight = 0;
@@ -773,9 +770,6 @@ function ConROC:SpellMenuUpdate(newSpell)
 							oItem:Hide()
 							--print("Hide spell", spellName)
 						end
-					else
-						scrollHeight = scrollHeight + math.ceil(lFrame:GetHeight());
-						spellFrameHeight = spellFrameHeight + math.ceil(oItem:GetHeight());
 					end
 				elseif _spellData.type == "aoetoggler" then
 					local spellName, _, spellTexture = GetSpellInfo(_spellData.spellID)
@@ -893,17 +887,17 @@ function ConROC:SpellMenuUpdate(newSpell)
 					end
 				end
 		end
-		if not anyHLVisible then
-			ConROC_NoOptionsFrame();
-			ConROC_NoOptions:Show();
-			scrollHeight = ConROCNoOptions:GetHeight()
-		else
-			if ConROCNoOptions then
-    			ConROC_NoOptions:Hide();
-    		end
+	if not anyHLVisible then
+		ConROC_NoOptionsFrame();
+		ConROC_NoOptions:Show();
+		scrollHeight = ConROCNoOptions:GetHeight()
+	else
+		if ConROCNoOptions then
+			ConROC_NoOptions:Hide();
 		end
+	end
 
-		ConROCScrollChild:SetHeight(scrollHeight);
+	ConROCScrollChild:SetHeight(scrollHeight);
 
 	-- Update for scrolling window -- Start
 	if fixOptionsWidth then
@@ -912,9 +906,6 @@ function ConROC:SpellMenuUpdate(newSpell)
 		ConROCScrollContainer:Show();
 		ConROCScrollChild:Show();
     end
-	if newSpell then
-		ConROC:closeSpellmenu();
-	end
 end
 
 function ConROC:RoleProfile()
