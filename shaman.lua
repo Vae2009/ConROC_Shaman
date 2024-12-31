@@ -449,7 +449,7 @@ function ConROC.Shaman.Damage(_, timeShift, currentSpell, gcd)
                     end
                 end
             else--not SoD
-                if _Player_Spec_ID == ids.Spec.Enhancement then
+                if ConROC:CheckBox(ConROC_SM_Role_Melee) then
                     if _LightningBolt_RDY and not _target_in_melee then
                         tinsert(ConROC.SuggestedSpells, _LightningBolt);
                         _Queue = _Queue + 1;
@@ -485,7 +485,7 @@ function ConROC.Shaman.Damage(_, timeShift, currentSpell, gcd)
                         _Queue = _Queue + 1;
                         break;
                     end
-                elseif _Player_Spec_ID == ids.Spec.Elemental then
+                elseif ConROC:CheckBox(ConROC_SM_Role_Caster) then
                     if ConROC:CheckBox(ConROC_SM_Option_Totems) then
                         if (not ConROC_AoEButton:IsVisible() or (not _target_in_melee or _enemies_in_melee < 2)) and _SearingTotem_RDY and _SearingTotem_DUR < 0.1 then
                             tinsert(ConROC.SuggestedSpells, _SearingTotem);
