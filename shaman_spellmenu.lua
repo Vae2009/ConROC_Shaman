@@ -152,8 +152,8 @@ function ConROC:RotationChoices()
 		{
 		frameName = "Options",
 		spells = {
-			{spellID = ids.Ability.RockbiterWeapon, spellCheckbox = "Option_Imbue", reqLevel = 1, type="custom", icon=136086, customName="Weapon imbue reminder"},
-			{spellID = ids.Ability.SearingTotem, spellCheckbox = "Option_Totems", reqLevel = 10, type="custom", icon=310730, customName="Suggest totems in rotation"},
+			{spellID = ids.Ability.RockbiterWeapon, spellCheckbox = "Option_Imbue", reqLevel = 1, type="custom", icon = 136086, customName="Weapon imbue reminder"},
+			{spellID = ids.Ability.SearingTotem, spellCheckbox = "Option_Totems", reqLevel = 10, type="custom", icon = 310730, customName="Suggest totems in rotation"},
 			{spellID = "AoE toggle Button", spellCheckbox = "Option_AoE", reqLevel = 20, type="aoetoggler"},
 		}
 		}

@@ -1,7 +1,7 @@
 ## Title:-|cffFFFFFFConROC|r- |cff0070DEShaman|r
-## Version: 1.15.17
+## Version: 1.15.18
 ## Author: Vae
-## Interface: 11505
+## Interface: 11506
 ## SavedVariablesPerCharacter: ConROCShamanSpells
 ## Dependencies: ConROC
 ## LoadOnDemand: 1
